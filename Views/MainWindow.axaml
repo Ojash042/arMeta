@@ -1,0 +1,51 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="using:arMeta.ViewModels"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:ic="using:FluentIcons.Avalonia"
+        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+        x:Class="arMeta.Views.MainWindow"
+        x:DataType="vm:MainWindowViewModel"
+        Icon="/Assets/avalonia-logo.ico"
+        Title="arMeta">
+
+    <Design.DataContext>
+        <!-- This only sets the DataContext for the previewer in an IDE,
+             to set the actual DataContext for runtime, set the DataContext property in code (look at App.axaml.cs) -->
+        <vm:MainWindowViewModel/>
+    </Design.DataContext>
+    
+    <ScrollViewer HorizontalAlignment="Stretch">
+        <StackPanel Orientation="Vertical" Margin="15" Spacing="15" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+            <TextBox x:Name="Toaster" IsVisible="False" IsEnabled="False" Text="Error! Something Went Wrong"></TextBox>
+            <StackPanel Orientation="Horizontal" Margin="10" HorizontalAlignment="Center">
+               <TextBox Text="{Binding FileLocation, Mode=TwoWay}" HorizontalContentAlignment="Stretch" Width="700" IsEnabled="False" Watermark="Choose a song file.." Margin="10" Padding="10"/> 
+               <Button Click="SelectSongDialog" Background="#00000000" HorizontalAlignment="Right">
+                   <ic:SymbolIcon Symbol="Folder" Margin="10,5,5,10" Padding="10"/>
+               </Button>
+           </StackPanel>
+            <TextBlock>Title: </TextBlock>
+            <TextBox Text="{Binding Title, Mode=TwoWay}"/>
+            <TextBlock>Artist: </TextBlock>
+            <TextBox Text="{Binding Artist, Mode=TwoWay}"/>
+            <TextBlock>Genre: </TextBlock>
+            <TextBox Text="{Binding Genre, Mode=TwoWay}"/> 
+            <TextBlock>Track Number: </TextBlock>
+            <TextBox Text="{Binding TrackNo, Mode=TwoWay}"/>
+            <TextBlock>Track Count: </TextBlock>
+            <TextBox Text="{Binding TrackCount, Mode=TwoWay}"/>
+            <TextBlock>Disc: </TextBlock>
+            <TextBox Text="{Binding DiscNo, Mode=TwoWay}"/>
+            <TextBlock>Total Disc: </TextBlock>
+            <TextBox Text="{Binding DiscTotal, Mode=TwoWay}"/>
+            <TextBlock>Album Artists:</TextBlock>
+            <TextBox Text="{Binding AlbumArtist, Mode=TwoWay}"/>
+            <TextBlock>Composer: </TextBlock>
+            <TextBox Text="{Binding Composer, Mode=TwoWay}"/>
+            <TextBlock>Year: </TextBlock>
+            <TextBox Text="{Binding Year, Mode=TwoWay}"/>
+       </StackPanel>     
+    </ScrollViewer>
+    
+</Window>
