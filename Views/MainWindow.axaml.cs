@@ -1,6 +1,7 @@
 using System;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using TagLib;
 using arMeta.ViewModels;
 using Avalonia.Animation;
@@ -16,6 +17,9 @@ public partial class MainWindow : Window{
     
     
     private MainWindowViewModel _mainWindowModel;
+    
+    // HACK: REMOVE THIS
+    private String fileLocation; 
 
     private static FilePickerFileType MusicFile{ get; } = new("Music File"){
         Patterns = new []{"*.mp3", "*.ogg", "*.flac", "*.wav"},
@@ -40,30 +44,58 @@ public partial class MainWindow : Window{
 
 
         if (file.Count == 1 && DataContext is MainWindowViewModel){
-            var tfile = TagLib.File.Create(Uri.UnescapeDataString(file[0].Path.AbsolutePath)).Tag;
+            fileLocation = file[0].Path.AbsolutePath;
+            
+            var tFile = TagLib.File.Create(Uri.UnescapeDataString(file[0].Path.AbsolutePath));
+            var tFileTag = tFile.Tag;
             
             // TODO: Animate a Toaster;
-            if (tfile is null){
+            if ( tFileTag == null){
                 return;
             }
             
             _mainWindowModel = new MainWindowViewModel(){
-                Title = tfile.Title,
-                Artist = tfile.JoinedAlbumArtists,
-                AlbumName = tfile.Album,
-                Genre = tfile.JoinedGenres,
-                TrackNo = tfile.Track,
-                TrackCount = tfile.TrackCount,
-                DiscNo = tfile.Disc,
-                DiscTotal = tfile.DiscCount,
-                AlbumArtist = tfile.JoinedAlbumArtists,
-                Composer = tfile.JoinedComposers,
-                Year = tfile.Year,
+                Title = tFileTag.Title,
+                Artist = tFile.Tag.JoinedPerformers,
+                AlbumName = tFileTag.Album,
+                Genre = tFileTag.JoinedGenres,
+                TrackNo = tFileTag.Track,
+                TrackCount = tFileTag.TrackCount,
+                DiscNo = tFileTag.Disc,
+                DiscTotal = tFileTag.DiscCount,
+                AlbumArtist = tFileTag.JoinedAlbumArtists,
+                Composer = tFileTag.JoinedComposers,
+                Year = tFileTag.Year,
                 
                 IsSongSelected = true,
                 FileLocation = file[0].Name,
             };
+            
             DataContext = _mainWindowModel;
         }
+    }
+
+    public void SaveID3TagToFile(object? sender, RoutedEventArgs routedEventArgs){
+
+        var tFile = TagLib.File.Create(Uri.UnescapeDataString(fileLocation));
+        var tFileTag = tFile.Tag;
+        if (tFileTag == null){
+           // TODO: Animate Toaster 
+           return;
+        }
+
+        if (!string.IsNullOrEmpty(_mainWindowModel.Title)) tFileTag.Title = _mainWindowModel.Title;
+        if (!string.IsNullOrEmpty(_mainWindowModel.Artist)) tFileTag.Performers = _mainWindowModel.Artist.Split(",");
+        if (!string.IsNullOrEmpty(_mainWindowModel.AlbumName)) tFileTag.Album = _mainWindowModel.AlbumName;
+        if (!string.IsNullOrEmpty(_mainWindowModel.Genre)) tFileTag.Genres = _mainWindowModel.Genre.Split(",");
+        if (_mainWindowModel.TrackNo != null) tFileTag.Track = _mainWindowModel.TrackNo.Value;
+        if (_mainWindowModel.TrackCount != null) tFileTag.TrackCount = _mainWindowModel.TrackCount.Value;
+        if (_mainWindowModel.DiscNo != null)   tFileTag.Disc = _mainWindowModel.DiscNo.Value;
+        if (_mainWindowModel.DiscTotal != null) tFileTag.DiscCount = _mainWindowModel.DiscTotal.Value; 
+        if (!string.IsNullOrEmpty(_mainWindowModel.AlbumArtist)) tFileTag.AlbumArtists = _mainWindowModel.AlbumArtist.Split(",");
+        if (!string.IsNullOrEmpty(_mainWindowModel.Composer)) tFileTag.Composers = _mainWindowModel.Composer.Split(",");
+        if(_mainWindowModel.Year != null) tFileTag.Year = _mainWindowModel.Year.Value;
+        
+        tFile.Save();
     }
 }

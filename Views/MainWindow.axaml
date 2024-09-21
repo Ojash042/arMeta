@@ -18,34 +18,42 @@
     
     <ScrollViewer HorizontalAlignment="Stretch">
         <StackPanel Orientation="Vertical" Margin="15" Spacing="15" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
-            <TextBox x:Name="Toaster" IsVisible="False" IsEnabled="False" Text="Error! Something Went Wrong"></TextBox>
+            <TextBox x:Name="Toaster" IsVisible="False" IsEnabled="False" HorizontalAlignment="Center" Text="Error! Something Went Wrong"></TextBox>
             <StackPanel Orientation="Horizontal" Margin="10" HorizontalAlignment="Center">
-               <TextBox Text="{Binding FileLocation, Mode=TwoWay}" HorizontalContentAlignment="Stretch" Width="700" IsEnabled="False" Watermark="Choose a song file.." Margin="10" Padding="10"/> 
                <Button Click="SelectSongDialog" Background="#00000000" HorizontalAlignment="Right">
                    <ic:SymbolIcon Symbol="Folder" Margin="10,5,5,10" Padding="10"/>
-               </Button>
+               </Button> 
+                <TextBox Text="{Binding FileLocation, Mode=TwoWay}" HorizontalContentAlignment="Stretch" Width="700" IsEnabled="False" Watermark="Choose a song file.." Margin="10" Padding="10"/> 
+                <Button Background="#00000000" IsVisible="{Binding IsSongSelected}" Click="SaveID3TagToFile">
+                    <StackPanel Orientation="Horizontal" Spacing="15" HorizontalAlignment="Stretch">
+                        <TextBlock Text="Save" VerticalAlignment="Center"/>
+                        <ic:SymbolIcon Symbol="Save" Margin="0, 5, 5, 10" ></ic:SymbolIcon>
+                    </StackPanel> 
+                </Button>
+                
            </StackPanel>
-            <TextBlock>Title: </TextBlock>
-            <TextBox Text="{Binding Title, Mode=TwoWay}"/>
-            <TextBlock>Artist: </TextBlock>
-            <TextBox Text="{Binding Artist, Mode=TwoWay}"/>
-            <TextBlock>Genre: </TextBlock>
-            <TextBox Text="{Binding Genre, Mode=TwoWay}"/> 
-            <TextBlock>Track Number: </TextBlock>
-            <TextBox Text="{Binding TrackNo, Mode=TwoWay}"/>
-            <TextBlock>Track Count: </TextBlock>
-            <TextBox Text="{Binding TrackCount, Mode=TwoWay}"/>
-            <TextBlock>Disc: </TextBlock>
-            <TextBox Text="{Binding DiscNo, Mode=TwoWay}"/>
-            <TextBlock>Total Disc: </TextBlock>
-            <TextBox Text="{Binding DiscTotal, Mode=TwoWay}"/>
-            <TextBlock>Album Artists:</TextBlock>
-            <TextBox Text="{Binding AlbumArtist, Mode=TwoWay}"/>
-            <TextBlock>Composer: </TextBlock>
-            <TextBox Text="{Binding Composer, Mode=TwoWay}"/>
-            <TextBlock>Year: </TextBlock>
-            <TextBox Text="{Binding Year, Mode=TwoWay}"/>
+            <StackPanel IsVisible="{Binding IsSongSelected}" Spacing="15">
+                <TextBlock>Title: </TextBlock>
+                <TextBox Text="{Binding Title, Mode=TwoWay}" Watermark="Child"/>
+                <TextBlock>Artist: </TextBlock>
+                <TextBox Text="{Binding Artist, Mode=TwoWay}" Watermark="Arc Type Set"/>
+                <TextBlock>Genre: </TextBlock>
+                <TextBox Text="{Binding Genre, Mode=TwoWay}" Watermark="Alternative Rock, Rock"/> 
+                <TextBlock>Track Number: </TextBlock>
+                <TextBox Text="{Binding TrackNo, Mode=TwoWay}" Watermark="5"/>
+                <TextBlock>Track Count: </TextBlock>
+                <TextBox Text="{Binding TrackCount, Mode=TwoWay}" Watermark="6"/>
+                <TextBlock>Disc: </TextBlock>
+                <TextBox Text="{Binding DiscNo, Mode=TwoWay}" Watermark="1"/>
+                <TextBlock>Total Disc: </TextBlock>
+                <TextBox Text="{Binding DiscTotal, Mode=TwoWay}" Watermark="1"/>
+                <TextBlock>Album Artists:</TextBlock>
+                <TextBox Text="{Binding AlbumArtist, Mode=TwoWay}" Watermark="Arc Type Set"/>
+                <TextBlock>Composer: </TextBlock>
+                <TextBox Text="{Binding Composer, Mode=TwoWay}" Watermark="Arc Type Set"/>
+                <TextBlock>Year: </TextBlock>
+                <TextBox Text="{Binding Year, Mode=TwoWay}" Watermark="2012"/>
+            </StackPanel>
        </StackPanel>     
     </ScrollViewer>
-    
 </Window>
